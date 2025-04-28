@@ -3,8 +3,12 @@ const {validate}=require("./helpers/validation")
 const app=express();
 const bcrypt=require("bcrypt");
 const connectDB=require("./config/db");
-const User=require("./model/user");
+const {User}=require("./model/user");
+const cookieparser=require("cookie-parser")
+const jwt=require("jsonwebtoken")
+const {adminauth}=require("./middleware/auth")
 app.use(express.json())
+app.use(cookieparser())
 
 app.post("/signup",async (req,res)=>{
    //validation of user
@@ -44,7 +48,7 @@ app.post("/login", async (req,res)=>{
 
     if(!user)
     {
-        throw new Error("User is not present in the DB")
+        throw new Error("Invalid credentials")
     }
 
 
@@ -53,16 +57,44 @@ app.post("/login", async (req,res)=>{
 
     if(isPassword)
     {
+        const token= await jwt.sign({_id:user.id},"Barghava123@",{expiresIn:"1hr"})
+
+      
+
+        res.cookie("token",token)
         res.send("Login Sucessfully")
     }
     else
     {
-        throw new Error("Password is not correct")
+        throw new Error("Invalid credentials")
     }
 }
 catch(error)
 {
     res.status(500).send(error.message)
+}
+
+})
+
+app.post("/sendrequest",adminauth,async(req,res)=>{
+    try {
+        res.send("Connection request sent ")
+        
+    } catch (error) {
+        res.status(400).send(error)
+        
+    }
+})
+
+
+app.get("/profile", adminauth,async(req,res)=>{
+   try { 
+    const user=req.user;
+    res.send(user)
+}
+catch(err)
+{
+    res.status(400).send(err.message)
 }
 
 })
@@ -84,7 +116,11 @@ app.get("/user", async (req,res)=>{
 app.get("/feed" ,async (req,res)=>{
     const user=req.body.email;
     try {
-        const users=await User.findOne();
+        const users=await User.find({email:user});
+        if(!users)
+        {
+            throw new Error("Invalid credentials")
+        }
         res.send(users);
         
     } catch (error) {
@@ -107,7 +143,7 @@ app.delete("/user",async (req,res)=>{
     }
 })
 
-app.patch("/user", async(req,res)=>{
+app.patch("/user", adminauth, async(req,res)=>{
     const userid=req.body.userid;
     const data=req.body;
     const opts={runValidators:true}
