@@ -1,5 +1,7 @@
 const mongoose=require("mongoose");
 const validator=require("validator");
+const jwt=require("jsonwebtoken")
+
 
 const userschema=new mongoose.Schema({
     firstName:{
@@ -68,6 +70,16 @@ const userschema=new mongoose.Schema({
 {
     timestamps:true
 });
+
+userschema.methods.getJWT=async function ()
+{
+    const user=this;
+    const token= await jwt.sign({_id:user.id},"Barghava123@",{expiresIn:"1hr"})
+
+    return token
+
+
+}
 
 const User=mongoose.model("User",userschema);
 

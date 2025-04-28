@@ -15,7 +15,7 @@ const adminauth= async (req,res,next)=>{
         const {_id}=decoded
       
         const user= await User.find({_id:_id})
-        console.log(user);
+       
         if(!user)
         {
             throw new Error("Invalid Credentials");
