@@ -1,5 +1,6 @@
 const jwt=require("jsonwebtoken")
 const {User}=require("../model/user")
+require("dotenv").config();
 const adminauth= async (req,res,next)=>{
     try { 
         const cookies=req.cookies;
@@ -10,11 +11,11 @@ const adminauth= async (req,res,next)=>{
         {
             throw new Error("token is not valid");
         }
-        const decoded= await jwt.verify(token,"Barghava123@")
+        const decoded= await jwt.verify(token,process.env.JWT_SECRET_KEY)
         
         const {_id}=decoded
       
-        const user= await User.find({_id:_id})
+        const user= await User.findOne({_id:_id})
        
         if(!user)
         {
