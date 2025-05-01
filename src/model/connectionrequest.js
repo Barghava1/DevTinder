@@ -2,10 +2,12 @@ const mongoose=require("mongoose");
 
 const connectionrequest= new mongoose.Schema({
     fromuserId:{
-        type:mongoose.Schema.Types.ObjectId
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
     },
     touserId:{
-        type:mongoose.Schema.Types.ObjectId
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
     },
     status:{
         type:String,
@@ -17,6 +19,8 @@ const connectionrequest= new mongoose.Schema({
 },{
     timestamps:true
 });
+
+connectionrequest.index({fromuserId:1,touserId:1})
 
 connectionrequest.pre("save",function(next){
     const connectionrequest=this;

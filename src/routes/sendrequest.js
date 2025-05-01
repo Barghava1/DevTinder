@@ -63,5 +63,51 @@ sendRouter.post("/sendrequest/:status/:userId",adminauth,async (req,res)=>{
     }
 })
 
+sendRouter.post("/reviewrequest/:status/:requestId", adminauth, 
+    async(req,res)=>{
+    try {
+        const Logedinuser=req.user;
+        const {status,requestId}=req.params;
+
+   
+  
+
+        const Allowed=["accepted","rejected"];
+if(!Allowed.includes(status)){
+            return res.status(400).json({
+                message:"Status is not valid"
+            })
+        }
+
+    const connect= await Connectionrequest.findOne({
+        _id:requestId,
+      touserId:Logedinuser._id,
+        status:"intrested"
+    });
+    
+
+    if(!connect)
+    {
+       return res.status(400).json({
+            message:"Connection not found"
+        })
+    }
+
+    connect.status=status;
+    const data=await connect.save();
+
+    res.json({ 
+        message:"Connection request"+status,
+        data
+    })
+
+        
+    } catch (error) {
+        res.status(400).send(error.message)
+        
+    }
+
+})
+
 
 module.exports=sendRouter;
