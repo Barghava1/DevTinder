@@ -56,7 +56,7 @@ authRouter.post("/signup",async (req,res)=>{
        
  
          res.cookie("token",token)
-         res.send("Login Sucessfully")
+         res.send(user);
      }
      else
      {

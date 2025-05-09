@@ -3,7 +3,7 @@ const  userRouter=express.Router();
 const {adminauth}=require("../middleware/auth")
 const {Connectionrequest}=require("../model/connectionrequest");
 const { User } = require("../model/user");
-const User_data="firstName lastName age gender skills";
+const User_data="firstName lastName age gender skills photoUrl";
 
 userRouter.get("/user/request/recieved", adminauth, async (req,res)=>{
     try {
@@ -69,6 +69,7 @@ userRouter.get("/feed", adminauth, async (req,res)=>{
         const skip=(page-1)*limit;
 
         const Logedinuser=req.user;
+   
 
         const connect=await Connectionrequest.find({
             $or:[
