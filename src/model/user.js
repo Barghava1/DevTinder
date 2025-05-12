@@ -56,7 +56,7 @@ const userschema=new mongoose.Schema({
     },
     photoUrl:{
         type:String,
-        default:"https:aphotoutl.com",
+        // default:"https:aphotoutl.com",
         // validate(value){
         //     if(!validator.isURL(value))
         //     {

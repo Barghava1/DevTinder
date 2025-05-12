@@ -95,6 +95,7 @@ if(!Allowed.includes(status)){
 
     connect.status=status;
     const data=await connect.save();
+   
 
     res.json({ 
         message:"Connection request"+status,

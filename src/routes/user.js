@@ -15,10 +15,10 @@ userRouter.get("/user/request/recieved", adminauth, async (req,res)=>{
             status:"intrested"
         }).populate("fromuserId",User_data)
 
-        const data=connect.map(row=>row.fromuserId)
+        // const data=connect.map(row=>row.fromuserId)
    
         res.json({message:"Data Fetched",
-           data
+           data:connect
         })
         
     } catch (error) {
