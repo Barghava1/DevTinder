@@ -11,7 +11,7 @@ const adminauth= async (req,res,next)=>{
         {
            return res.status(401).send("Please Login!");
         }
-        const decoded= await jwt.verify(token,process.env.JWT_SECRET_KEY)
+        const decoded= await jwt.verify(token,"Barghava123@")
         
         const {_id}=decoded
       
