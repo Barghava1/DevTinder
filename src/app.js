@@ -36,8 +36,8 @@ connectDB().then(()=>{
     app.listen(8888, ()=>{
         console.log(`Server is running sucessfully on http://localhost:8888`)
     });
-}).catch(()=>{
-    console.log("Databse cannot connected")
+}).catch((error)=>{
+    console.log("Databse cannot connected",error.message)
 })
 
 
