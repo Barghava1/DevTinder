@@ -33,7 +33,7 @@ app.use("/",userRouter);
 
 connectDB().then(()=>{
     console.log("Database connection is established");
-    app.listen(8888, ()=>{
+    app.listen(8888,  '0.0.0.0', ()=>{
         console.log(`Server is running sucessfully on http://localhost:8888`)
     });
 }).catch((error)=>{
